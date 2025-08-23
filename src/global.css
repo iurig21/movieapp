@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@keyframes favourite-pop {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 #fbbf24;
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 16px 4px #fbbf24;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 #fbbf24;
+  }
+}
+
+.animate-favourite {
+  animation: favourite-pop 0.5s ease;
+  z-index: 1;
+}
