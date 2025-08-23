@@ -1,7 +1,7 @@
 import MovieCard from "./components/MovieCard";
 import Title from "./components/Title";
 import "./global.css";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar";
 import Button from "./components/Button";
 import { useNavigate } from "react-router";
@@ -37,14 +37,16 @@ function App() {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-         `Bearer ${import.meta.env.VITE_API_KEY}`,
+        Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
       },
     };
 
-    const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${input}`,options);
+    const response = await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${input}`,
+      options
+    );
     const responseJSON = await response.json();
-    const {results} = responseJSON;
+    const { results } = responseJSON;
     setMovies(results);
   }
 
@@ -58,7 +60,7 @@ function App() {
         </div>
       </header>
       <main className="px-6 sm:px-10 pb-24 max-w-7xl mx-auto w-full space-y-5">
-        <SearchBar SearchMovies={SearchMovies}/>
+        <SearchBar SearchMovies={SearchMovies} />
         <MovieCard movies={movies} />
       </main>
     </div>

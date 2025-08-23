@@ -1,49 +1,84 @@
-import { useContext} from "react";
+import { useState, useContext } from "react";
 import FavouritesContext from "../contexts/FavouritesContext";
 
-function MovieCard({movies}) {
-    
-  const {HandleMovieClick} = useContext(FavouritesContext);
+function MovieCard({ movies }) {
+  const { favourites, HandleMovieClick } = useContext(FavouritesContext);
+  const [animatingId, setAnimatingId] = useState(null);
+
+  const handleFavourite = (movie) => {
+    setAnimatingId(movie.id);
+    HandleMovieClick(movie);
+    setTimeout(() => setAnimatingId(null), 600);
+  };
 
   return (
     <div className="grid gap-6 sm:gap-8 grid-cols-[repeat(auto-fill,minmax(180px,1fr))] w-full">
-      {movies.map((movie,idx) => (
-        <article
-          key={idx}
-          className="group relative flex flex-col rounded-xl overflow-hidden bg-neutral-800/70 border border-neutral-700 shadow transition hover:shadow-xl hover:border-neutral-500" onClick={() => HandleMovieClick(movie)}
-        >
-          <div className="relative aspect-[2/3] w-full overflow-hidden bg-neutral-700">
+      {movies.map((movie) => {
+        const isFavourite = favourites.some((fav) => fav.id === movie.id);
+        return (
+          <div
+            key={movie.id}
+            className="relative rounded-lg overflow-hidden bg-neutral-800 border border-neutral-700 shadow transition hover:shadow-xl hover:border-neutral-500"
+          >
+            {}
+            <button
+              className={`absolute top-3 right-3 z-10 rounded-full bg-neutral-900/80 p-2 transition hover:bg-neutral-800 ${
+                animatingId === movie.id ? "animate-heart" : ""
+              }`}
+              onClick={() => handleFavourite(movie)}
+              aria-label={
+                isFavourite ? "Remove from favourites" : "Add to favourites"
+              }
+            >
+              <span
+                className={`heart-icon transition-all duration-300 ${
+                  isFavourite ? "text-red-500" : "text-neutral-400"
+                }`}
+              >
+                {isFavourite ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    width="28"
+                    height="28"
+                  >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="28"
+                    height="28"
+                  >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                )}
+              </span>
+            </button>
             <img
-              src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ""}  
-              alt={movie.title + " poster"}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-105 group-hover:brightness-110"
-              loading="lazy"
+              src={
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                  : "/placeholder.jpg"
+              }
+              alt={movie.title}
+              className="w-full h-72 object-cover"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/10 to-neutral-950/0 opacity-70" />
-            <span className="absolute top-2 right-2 text-[10px] font-medium tracking-wide uppercase bg-neutral-900/80 backdrop-blur px-2 py-1 rounded-full border border-neutral-700 text-neutral-300">
-              {new Date(movie.release_date).getFullYear()}
-            </span>
+            <div className="p-4 flex flex-col gap-2">
+              <h2 className="text-lg font-bold">{movie.title}</h2>
+              {}
+              <span className="text-sm text-neutral-400">
+                {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col gap-2 p-3 sm:p-4 grow">
-            <h3 className="text-sm sm:text-base font-semibold leading-tight text-white line-clamp-2 group-hover:text-amber-300 transition-colors">
-              {movie.title}
-            </h3>
-            <p className="text-[11px] uppercase tracking-wide text-neutral-400">
-              {new Date(movie.release_date).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </p>
-            {movie.overview && (
-              <p className="mt-auto text-xs text-neutral-300 line-clamp-4 leading-relaxed">
-                {movie.overview}
-              </p>
-            )}
-          </div>
-          <div className="absolute inset-0 ring-0 group-hover:ring-2 group-hover:ring-amber-400/60 transition rounded-xl" />
-        </article>
-      ))}
+        );
+      })}
     </div>
   );
 }
