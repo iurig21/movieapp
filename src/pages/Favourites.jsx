@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
 import FavouritesContext from "../contexts/FavouritesContext";
+import { Star } from 'lucide-react';
 
 function Favourites() {
   const navigate = useNavigate();
@@ -77,6 +78,10 @@ function Favourites() {
                     {movie.release_date
                       ? movie.release_date.slice(0, 4)
                       : "N/A"}
+                  </span>
+                  <span className="flex gap-2 text-sm text-neutral-400">
+                    <Star className="text-yellow-500" />
+                    {movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"}
                   </span>
                 </div>
               </div>

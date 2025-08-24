@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import FavouritesContext from "../contexts/FavouritesContext";
+import { Star } from 'lucide-react';
 
 function MovieCard({ movies }) {
   const { favourites, HandleMovieClick } = useContext(FavouritesContext);
@@ -69,11 +70,15 @@ function MovieCard({ movies }) {
               alt={movie.title}
               className="w-full h-72 object-cover"
             />
-            <div className="p-4 flex flex-col gap-2">
+            <div className="p-4 flex flex-col gap-3">
               <h2 className="text-lg font-bold">{movie.title}</h2>
               {}
               <span className="text-sm text-neutral-400">
                 {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
+              </span>
+              <span className="flex gap-2 text-sm text-neutral-400">
+                <Star className="text-yellow-500"/>
+                {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}
               </span>
             </div>
           </div>

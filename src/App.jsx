@@ -9,6 +9,8 @@ import { useNavigate } from "react-router";
 function App() {
   const [movies, setMovies] = useState([]);
 
+  console.log(movies);
+
   const navigate = useNavigate();
 
   useEffect(() => {
